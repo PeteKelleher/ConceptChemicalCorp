@@ -1,0 +1,91 @@
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#875A7B;">Generating ABA File</h2>
+        <h3 class="oe_slogan">Register batch payment for different vendors. Generate ABA file from payment then import to bank to make payment.</h3>
+        <div class="oe_demo oe_picture oe_screenshot">
+            <img src="./src/demo_image.png">
+        </div>
+    </div>
+</section>
+
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#875A7B;">Instructions</h2>
+        <h3 class="oe_slogan">Scenarios:</h3>
+        <div class="oe_span6 text-justify oe_mt32">
+            <span class="fa fa-search fa-2x pull-left"/>
+            <p class="oe_mb32">
+            Assuming we have 2 Vendors: C and D
+            </p>
+            <span class="fa fa-sliders fa-2x pull-left"/>
+            <p class="oe_mb32">
+            We have a Purchase Order for each vendor, for example:
+            </p>
+			<p class="oe_mb32">
+			1. Vendor C, we purchase Product A as screenshot
+            </p>
+            <div class="oe_demo oe_picture oe_screenshot">
+              <img src="./src/vendor_c_po.png">
+            </div>
+			<p class="oe_mb32">
+			2. Vendor D, we purchase Product B as screenshot
+            </p>
+		    <div class="oe_demo oe_picture oe_screenshot">
+              <img src="./src/vendor_d_po.png">
+            </div>
+			<p class="oe_mb32">
+			3. For each PO, we open an Vendor Bill, validate, but has not Register Payment yet.
+            </p>
+		    <div class="oe_demo oe_picture oe_screenshot">
+              <img src="./src/vendor_bill.png">
+            </div>
+		</div>
+    </div>
+</section>
+
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Usages:</h3>
+        <div class="oe_span6 text-justify oe_mt32">
+            <span class="fa fa-search fa-2x pull-left"/>
+            <p class="oe_mb32">
+            Now we are going to register payment for 2 vendors in example above
+            </p>
+            <span class="fa fa-sliders fa-2x pull-left"/>
+            <p class="oe_mb32">
+            1. Access Accounting > Purchase > Vendor Bills 
+            </p>
+            <div class="oe_demo oe_picture oe_screenshot">
+             <img src="./src/vendor_bill_menu.png">
+		    </div>
+			<p class="oe_mb32">
+			2. Here we can see Open bill of Vender C and D
+            </p>
+            <div class="oe_demo oe_picture oe_screenshot">
+              <img src="./src/open_bill.png">
+            </div>
+			<p class="oe_mb32">
+			3. Selecting all Open bill, in this example, only for C and D
+            </p>
+
+			<p class="oe_mb32">
+			4. Next, Open Action menu, here we can see Register Batch Payment
+            </p>
+			<div class="oe_demo oe_picture oe_screenshot">
+				<img src="./src/register_batch_payment.png">
+			</div>
+			<p class="oe_mb32">
+			5. Select Journal account, add Details, and check the amount of payment again. If all set, we free to click Confirm button.
+            </p>
+		    <div class="oe_demo oe_picture oe_screenshot">
+             <img src="./src/batch_payment_popup.png">
+            </div>
+			<p class="oe_mb32">
+			6. Last, we can click Generate ABA File button. The file will be generated and added under Attachment(s) menu
+            </p>
+		    <div class="oe_demo oe_picture oe_screenshot">
+             <img src="./src/aba_file.png">
+            </div>
+		</div>
+    </div>
+</section>
