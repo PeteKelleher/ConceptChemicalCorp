@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+        <menuitem
+            name="Batch Payments"
+            parent="account.menu_finance_payables"
+            id="menu_batch_payments" action="action_batch_payments" sequence="50"/>
+	</data>
+</openerp>

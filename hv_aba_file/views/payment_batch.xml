@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="hv_batch_payments_form_view" model="ir.ui.view">
+            <field name="name">hv.batch_payment.inherit</field>
+            <field name="model">account.payment.batch</field>
+            <field name="inherit_id" ref="hv_batch_payment.batch_payments_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button name="generate_aba_file" string="Generate ABA file" type="object" class="oe_highlight"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
