@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+    
+     <template id="ia_cc_stock_picking_operation_stock_view" inherit_id ="stock.report_picking">
+<!--            <xpath expr="//t/t/div/div[2]"  position="before">-->
+<!--                <h1>Picking Slip</h1>-->
+<!--            </xpath>-->
+			<!-- Remove Barcode -->
+			<xpath expr="//div/img" position="replace">
+			</xpath>
+			<xpath expr="//t[@t-call='web.external_layout']" position="before">
+	          	<t t-set="is_picking_slip" t-value="True"/>
+          	</xpath>
+            <xpath expr="//span[@t-field='ml.product_id.display_name']" position="after">
+               <span t-field="ml.product_id.x_studio_field_xYGHQ"/>
+            </xpath>
+            <xpath expr="//th[@t-if='has_serial_number']/strong" position="replace">
+                <strong>Batch</strong>
+            </xpath>
+            <xpath expr="//span[@t-field='o.scheduled_date']" position="attributes">
+               <attribute name="t-options">{'widget': 'date'}</attribute>
+            </xpath>
+             <xpath expr="//span[@t-field='ml.product_uom_qty']" position="replace">
+               <span t-if="o.state != 'done'" t-esc="'%.2f' % ml.product_uom_qty"/>
+            </xpath>
+            <xpath expr="//span[@t-field='ml.location_dest_id']" position="attributes"> 
+                <attribute name="class">hidden</attribute>
+            </xpath>
+            <xpath expr="//span[@t-field='ml.qty_done']" position="replace">
+               <span t-if="o.state == 'done'" t-esc="'%.2f' % ml.qty_done"/>
+            </xpath>
+            <xpath expr="//div/div[2]/div[1]/div[2]" position="replace">
+                <div t-if="o.picking_type_id.warehouse_id.partner_id">
+                    <strong>Customer:</strong>
+                    <div t-field="o.picking_type_id.warehouse_id.partner_id"
+                    	 t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                </div>
+            </xpath>
+            <xpath expr="//t/t/t/div/div[2]/div[2]/div[1]" position="replace">
+               <div t-if="o.picking_type_id.code=='incoming' and o.partner_id">
+                    <span><strong>Shipping Address:</strong></span>
+               </div>
+            </xpath>
+            <xpath expr="//div[@name='partner_header']" position="replace">
+               <div t-if="o.partner_id" name="partner_header">
+                    <div t-field="o.partner_id" 
+                       t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                    <p t-if="o.sudo().partner_id.vat"><t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="o.sudo().partner_id.vat"/></p>
+                </div>
+            </xpath>
+            <xpath expr="//div/h1[@t-field='o.name']" position="replace">
+            	<div class="text-center"><h2>WAREHOUSE PICK <span t-field="o.name"/></h2></div>
+            </xpath>
+            <xpath expr="//div/table[2]/thead/tr/th[2]" position="replace">
+            </xpath>
+            <xpath expr="//div/table[2]/tbody/t/t/tr/td[2]" position="replace">
+            </xpath>
+            <xpath expr="//div/table[2]/thead/tr/th[@align='left']" position="replace">
+            </xpath>
+            <xpath expr="//div/table[2]/tbody/t/t/tr/td[@width='20%']" position="replace">
+            </xpath>
+            <xpath expr="//table[1]/thead/tr/th[@t-if='o.origin']" position="after">
+            	<th><strong>Delivery</strong></th>
+            	<th><strong>Commitment Date</strong></th>
+            	<th><strong>Carrier</strong></th>
+            </xpath>
+            <xpath expr="//table[1]" position="after">
+            	<strong>Special Instruction:<span t-field="o.custom_comment"/></strong>
+            </xpath>
+            <xpath expr="//t/div/table[2]" position="replace">
+            	<table class="table table-sm" t-if="o.move_line_ids">
+                                <t t-set="has_barcode" t-value="any([move_ids_without_package.product_id and move_ids_without_package.product_id.sudo().barcode or move_ids_without_package.package_id for move_ids_without_package in o.move_line_ids])"/>
+                                <t t-set="has_serial_number" t-value="o.move_line_ids.filtered(lambda ml: ml.lot_id or ml.lot_name)" groups="stock.group_production_lot"/>
+                                <thead>
+                                    <tr>
+                                        <th><strong>Product</strong></th>
+                                        <th><strong>Pack Size</strong></th>
+                                        <th><strong>Quantity</strong></th>
+                                        <th><strong>Number Packages</strong></th>
+                                        <th><strong>Batch Number</strong></th>
+                                        <th class="text-right"><strong>Gross Shipping Weight</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.move_ids_without_package.sorted(key=lambda m: m.product_id.id)" t-as="move">
+                                        <t t-foreach="move.move_line_ids.sorted(key=lambda ml: ml.location_id.id)" t-as="ml">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="ml.product_id.display_name"/><br/>
+                                                    <span t-field="ml.product_id.description_picking"/>
+                                                </td>
+                                                <td>
+                                                		<span t-field="ml.package_id.weight"/>
+                                                </td>
+                                                <td>
+                                                    <span t-if="o.state != 'done'" t-field="ml.product_uom_qty"/>
+                                                    <span t-if="o.state == 'done'" t-field="ml.qty_done"/>
+                                                    <span t-field="ml.product_uom_id" groups="uom.group_uom"/>
+
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                	<span t-field="ml.lot_name"/>
+                                                </td>
+                                                <td class="text-right">
+                                                	<span t-field="ml.product_id.weight"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <tr>
+                                    	<td></td>
+                                    	<td></td>
+                                    	<td></td>
+                                    	<td></td>
+                                    	<td><font color="#875a7b"><b>Total Quantity</b></font></td>
+                                    	<td class="text-right">
+                                    		<span t-esc="sum(p_qty.product_uom_qty  for p_qty in o.move_ids_without_package) "/>
+                                    	</td>
+                                    </tr>
+                                    <tr>
+                                    	<td></td>
+                                    	<td></td>
+                                    	<td></td>
+                                    	<td></td>
+                                    	<td><font color="#875a7b"><b>Total Packages</b></font></td>
+                                    	<td class="text-right">
+                                    		<span t-esc="sum(p_qty.weight  for p_qty in o.move_ids_without_package) "/>
+                                    	</td>
+                                    </tr>
+                                    <tr>
+                                    	<td></td>
+                                    	<td></td>
+                                    	<td></td>
+                                    	<td></td>
+                                    	<td><font color="#875a7b"><b>Total Gross Shipping Weights</b></font></td>
+                                    	<td class="text-right"><span t-esc="sum(p_qty.product_id.weight  for p_qty in o.move_ids_without_package) "/></td>
+                                    </tr>
+                                  </tbody>
+                            </table>
+            </xpath>
+            <xpath expr="//table[1]/tbody/tr/td[@t-if='o.origin']" position="after">
+            	<td>
+                    <span t-field="o.state"/>
+                </td>
+                <td>
+                    <span t-field="o.scheduled_date"/>
+                </td>
+                <td>
+                     <span t-field="o.carrier_id"/>
+                </td>
+            </xpath>
+           <!--  <xpath expr="//t/t/t/div/table[2]/tbody/t/t/tr/td[4]" position="after">
+                <td>
+                    <span t-if="o.state != 'done'" t-field="ml.product_uom_qty"/>
+                    <span t-if="o.state == 'done'" t-field="ml.qty_done"/>
+                    <span t-field="ml.product_uom_id" groups="uom.group_uom"/>
+                </td>
+            </xpath>
+           <xpath expr="//div/table[2]/thead/tr/th[@t-if='has_serial_number']" position="replace">
+                <th width="15%" class="text-center" t-if="has_serial_number">
+                   <strong>Lot/Batch #</strong>
+                </th>
+            </xpath>-->
+        </template>
+    </data>
+</odoo>
+

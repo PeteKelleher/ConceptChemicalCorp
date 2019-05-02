@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+        <template id="external_layout_clean_inherit_tax_vat" inherit_id="web.external_layout_clean" >
+        	<xpath expr="//div[@class='o_clean_header']" position="attributes">
+        		<attribute name="style">border-bottom: 2px solid #000080;</attribute>
+        	</xpath>
+            <!--VAT to ABN-->
+<!--            <li t-if="company.vat" position="replace">-->
+<!--                <li t-if="company.vat"><t t-esc="company.country_id.vat_label or 'ABN'"/>: <span t-field="company.vat"/></li>-->
+<!--            </li>-->
+<!--            <xpath expr="//div[2]/span[@class='company_address']" position="replace">-->
+<!--            </xpath>-->
+<!--            <xpath expr="//div/div[2]/ul" position="replace">-->
+<!--               <ul class="list-unstyled" style="font-size:10px;">-->
+<!--                   <strong><li t-if="company.name"><span t-field="company.name"/></li></strong>-->
+<!--                       <li t-if="company.vat"><span >ABN: </span> <span t-field="company.vat"/></li>-->
+<!--                       <li t-if="company.phone"><span >Tel: </span><span t-field="company.phone"/></li>-->
+<!--                       <li t-if="company.email"><span  t-field="company.email"/></li>-->
+<!--                       <li t-if="company.website"><span  t-field="company.website"/></li>-->
+<!--               </ul>-->
+<!--            </xpath>-->
+            
+            <!--VAT to ABN-->
+             
+        <xpath expr="//ul/li[2]" position="replace">
+        	<li t-if="company.phone"><span><i class="fa fa-phone icon-large"></i> Tel: </span><span t-field="company.phone"/></li>
+        </xpath>
+		<xpath expr="//div[1]/img" position="attributes">
+			<attribute name="style">max-height: 250px;max-width:300px;</attribute>
+		</xpath>            
+<!--		<xpath expr="//li[@t-if='company.name']" position="after" >-->
+<!--			<li>Trading as Concept Ingredients</li>-->
+<!--		</xpath>            -->
+        <li t-if="company.vat" position="replace">
+            <!--<li t-if="company.vat">ABN: <span t-field="company.vat"/></li>-->
+            <li>Trading as Concept Ingredients</li>
+            <li t-if="company.vat"><t t-esc="company.country_id.vat_label or 'ABN'"/>: <span t-field="company.vat"/></li>
+            <li>Head Office Address: Suite 7, Level 2</li>
+			<li>122-126 Old Pittwater Road</li>
+			<li>Brookvale NSW 2100</li>
+			<li>Mail Address: PO Box 7384</li>
+			<li>Warringah Mall NSW 2100</li>
+        </li>
+        <div class="footer o_clean_footer" position="replace">
+            <div class="footer o_clean_footer">
+<!--                <div class="row mt8"-->
+                	<!--<div class="col-xs-2" t-if="is_commercial_invoice" style="padding-left:15px;padding-right:15px;"> 
+                       <span class="company_address" t-field="company.partner_id"  
+                             t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'
+                         />
+                    </div>
+                    <div class="col-xs-2" t-if="is_so_doc" style="padding-left:15px;padding-right:15px;">
+                      <span class="company_address" t-field="company.partner_id"  
+                             t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'
+                         />
+                    </div>
+                    <div class="col-xs-2" t-if="is_pod_doc" style="padding-left:15px;padding-right:15px;">
+                       <span class="company_address" t-field="company.partner_id"  
+                             t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'
+                         />
+                    </div>
+                    <div class="col-xs-2" t-if="is_cust_inv" style="padding-left:15px;padding-right:15px;">
+                       <span class="company_address" t-field="company.partner_id"  
+                             t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'
+                         />
+                    </div>
+                    <div class="col-xs-2" t-if="is_commercial_invoice">-->
+                        <!-- <t t-if="o._name != 'account.payment' and (o._name!='sale.order' or is_pro_forma)"> -->
+                        <!-- <t > -->
+<!--                            <span t-field="company.report_footer"/-->
+                        <!-- </t> -->
+                <!--    </div>
+                    <div class="col-xs-2" t-if="is_poconfirm_doc">
+                            <span t-field="company.report_footer"/>    
+                    </div>
+                    <div class="col-xs-2" t-if="is_expected_delivery_slip">-->
+                        <!-- <t t-if="o._name != 'account.payment' and (o._name!='sale.order' or is_pro_forma)"> -->
+                        <!-- <t > -->
+
+                        <!-- </t> -->
+                   <!-- </div> 
+                    <div class="col-xs-2" style="padding-left:15px;">
+                        <span style="color:#591A51;" class="mt0 mb0 text-uppercase" t-field="company.report_header"/>
+                    </div>-->
+                    <div class="col-xs-10 text-center" t-if="not is_picking_slip">
+                      <span t-field="company.custom_footer_note"/>
+                    </div>
+                    <div class="col-xs-1 text-center">
+                    	<span>Page </span><span class="page" /> of <span class="topage" />
+                    </div>
+                    
+<!--                </div-->
+            </div>
+        </div>
+        </template>
+        
+</odoo>
