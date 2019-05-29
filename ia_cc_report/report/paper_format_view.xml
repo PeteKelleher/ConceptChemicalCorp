@@ -19,7 +19,7 @@
             <field name="dpi">90</field>
     </record>-->
   	
-  	<record id="paperformat_my_cc_report1" model="report.paperformat">
+  	<!--<record id="paperformat_my_cc_report1" model="report.paperformat">
         <field name="name">Paper Format(Sales Order, PRO-FORMA INVOICE, Invoices, Commercial Invoices)</field>
         <field name="default" eval="True" />
         <field name="format">Letter</field>
@@ -69,7 +69,7 @@
     </record>
     <record id="stock.action_report_delivery" model="ir.actions.report">
             <field name="paperformat_id" ref="ia_cc_report.po_dp_paperformat_cc_report2"/>
-    </record>
+    </record>-->
     
   </data>
 </odoo>
