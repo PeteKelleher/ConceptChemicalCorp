@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report 
+            id="action_custom_report_commercial_invoice_jsi"
+            model="account.invoice"
+            string="Commercial Invoices"
+            report_type="qweb-pdf"
+            name="ia_cc_report.custom_report_commercial_invoice_jsi"
+            file="ia_cc_report.custom_report_commercial_invoice_jsi" 
+        	paperformat="ia_cc_report.paperformat_my_cc_report1"
+            />
+        
+        <template id="custom_report_commercial_invoice_document_jsi" name="commercial_inv_report">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                <div class="page">
+                	<table width="100%">
+                		<tr>
+                			<td width="70%">
+                				<strong>Customer address:</strong>
+			                    <span t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+			                    <div t-if="o.partner_id.vat" class="mt16"><t t-esc="o.company_id.country_id.vat_label or 'TIN'"/>: <span t-field="o.partner_id.vat"/></div>
+                			</td>
+                			<td width="30%">
+                				<strong>Invoice address:</strong>
+			                    <span t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+			                    <div t-if="o.partner_id.vat" class="mt16"><t t-esc="o.company_id.country_id.vat_label or 'TIN'"/>: <span t-field="o.partner_id.vat"/></div>
+                			</td>
+                		</tr>
+	                </table>
+<!--                    <div class="row">-->
+<!--                        <div name="invoice_address" class="col-xs-5 col-xs-offset-7">-->
+<!--                            <strong>Invoice address:</strong>-->
+<!--                            <address t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>-->
+<!--                            <div t-if="o.partner_id.vat" class="mt16"><t t-esc="o.company_id.country_id.vat_label or 'TIN'"/>: <span t-field="o.partner_id.vat"/></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <h2 class="text-center">
+                        <!-- <span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">Invoice</span>
+                        <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Draft Invoice</span>
+                        <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Cancelled Invoice</span>
+                        <span t-if="o.type == 'out_refund'">Credit Note</span>
+                        <span t-if="o.type == 'in_refund'">Vendor Credit Note</span>
+                        <span t-if="o.type == 'in_invoice'">Vendor Bill</span> -->
+                        <span>Commercial Invoice </span> 
+                        <span t-field="o.number"/>
+                    </h2>
+                    
+                    <div id="commercial_informations" class="row mt32 mb32">
+                        <div class="col-auto mw-100 mb-2" t-if="o.name">
+                            <strong>Your Reference#</strong>
+                            <p class="m-0" t-field="o.name"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2" t-if="o.date_invoice">
+                            <strong>Invoice Date:</strong>
+                            <p class="m-0" t-field="o.date_invoice"/>
+                        </div>
+<!--                        <div class="col-auto mw-100 mb-2" t-if="o.date_due and o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">-->
+<!--                            <strong>Due Date:</strong>-->
+<!--                            <p class="m-0" t-field="o.date_due"/>-->
+<!--                        </div>-->
+                        <div class="col-auto mw-100 mb-2" t-if="o.origin">
+                            <strong>Source:</strong>
+                            <p class="m-0" t-field="o.origin"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2" t-if="o.partner_id.ref">
+                            <strong>Customer Code:</strong>
+                            <p class="m-0" t-field="o.partner_id.ref"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2" t-if="o.user_id">
+                            <strong>Sales Person:</strong>
+                            <p class="m-0" t-field="o.user_id"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2" t-if="o.payment_term_id.note">
+                            <strong>Payment Term:</strong>
+                            <p class="m-0" t-field="o.payment_term_id"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2" t-if="o.incoterm_id">
+			          		<strong>Incoterms:</strong>
+			          		<p t-field="o.incoterm_id"/>
+			        	</div>
+<!--                        <div name="commercial_reference" class="col-auto mw-100 mb-2" t-if="o.reference">-->
+<!--                            <strong>Reference:</strong>-->
+<!--                            <p class="m-0" t-field="o.reference"/>-->
+<!--                        </div>-->
+                    </div>
+
+                    <!-- Is there a discount on at least one line? -->
+                    <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
+
+                    <table class="table table-condensed" name="invoice_line_table">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Pack Size(KG)</th>
+                               <!-- <th>INCI Name</th>-->
+                                <th>Batch Number</th>
+<!--                                <th class="hidden">Source Document</th-->
+                                <th class="text-right">Unit Quantity</th>
+                                <th class="text-right">UOM</th>
+                                <!-- <th class="text-right">Unit Price</th> -->
+                                <th class="text-right">Unit Price</th>
+                                <th t-if="display_discount" class="text-right">Disc.(%)</th>
+                                <!-- <th class="text-right">Taxes</th> -->
+                                <th class="text-right">Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="invoice_tbody">
+                            <tr t-foreach="o.invoice_line_ids" t-as="l">
+                                <td><span t-field="l.name"/></td>
+                                <td></td>
+<!--                                <td><span t-field="l.product_id.x_studio_field_xYGHQ"/></td-->
+                                <td> 
+                                	
+					        	</td>
+<!--                                <td class="hidden"><span t-field="l.origin"/></td-->
+                                <td class="text-right">
+                                    <span t-esc="'%.2f' % l.quantity"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="l.uom_id" groups="product.group_uom"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="l.price_unit"/>
+                                </td>
+                                <td t-if="display_discount" class="text-right">
+                                    <span t-field="l.discount"/>
+                                </td>
+                                <!-- <td class="text-right">
+                                    <span t-esc="', '.join(map(lambda x: (x.description or x.name), l.invoice_line_tax_ids))"/>
+                                </td> -->
+                                <td class="text-right" id="subtotal">
+                                    <span t-field="l.invoice_id.currency_id.name"/> <span t-field="l.price_subtotal" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="clearfix">
+                		<div id="total" class="row" name="total">
+                            <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                <table class="table table-sm">
+                                    <tr class="border-black o_subtotal" style="border-bottom:1px solid #dddddd;">
+                                        <td><strong>Subtotal</strong></td>
+                                        <td class="text-right">
+                                           <span t-field="o.currency_id.name"/> <span t-field="o.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom:1px solid #dddddd;">
+                                        <td><strong>GST</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.currency_id.name"/> <span t-field="o.amount_tax" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-black">
+                                        <td><strong>Total Amount</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.currency_id.name"/> <span t-field="o.amount_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <t t-set="payments_vals" t-value="o._get_payments_vals()"/>
+                                    <t t-foreach="payments_vals" t-as="payment_vals">
+                                        <tr>
+                                            <td>
+                                                <i class="oe_form_field text-right oe_payment_label">Paid on <t t-esc="payment_vals['date']"/></i>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="payment_vals['amount']" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="len(payments_vals) &gt; 0">
+                                        <tr class="border-black">
+                                            <td><strong>Amount Due</strong></td>
+                                            <td class="text-right">
+                                                 <span t-field="o.residual" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <tr class="border-black">
+                                        <td><strong>Currency</strong></td>
+                                        <td class="text-right">
+                                            <span t-field="o.currency_id.name"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <t t-if="o.currency_id.name != 'USD'">
+	                    <p>
+	                        Payment Method: Electronic Transfer <br/>
+	                    	Concept Chemical Corporation PTY LTD,<br/> 
+	                    </p>
+	                 <!--   <p> 
+	                       USD Bank:
+	                       <p><span t-field="o.partner_bank_id.partner_id"/></p>
+	                       <p>Account Number:<span t-field="o.partner_bank_id.acc_number"/></p> 
+	                       <p><span t-field="o.partner_bank_id.bank_id"/></p>
+	                    </p>-->
+	                 	
+	                    <table>
+			         		<tr>
+			         			<td width="40%">
+			         		    <strong>Pay by EFT:</strong><br/>
+			         			EFT Bank Details:<br/>
+								BSB: 032 083<br/>
+								Account Number: 270511<br/>
+								Account Name: Concept Chemical Corporation Pty Ltd
+							    </td>
+			         			<td width="60%" class="text-right">
+			         			<strong>We Accept Payment By Credit Card:</strong><br/>
+								www.conceptingredients.com.au/payment<br/>
+								Surcharge on domestic cards 1.5%, non-domestic cards <br/>
+								charged at higher rate and accepted at our<br/>
+								discretion. Please call our accounts <br/>
+								team on +61 2 9498 7600 for credit card payment by phone.
+			         			</td>
+			         		</tr>
+			         	</table>
+		         	</t>
+		         	<t t-if="o.currency_id.name == 'USD'">
+			         	<table>
+			         		<tr>
+			         			<td width="100%">
+			         		    Concept REF - OSO 3993 - 58380 Part10<br/>
+			         			FOB Shipment to Melbourne, VIC<br/>
+								2FCLs Container Numbers CSNU1287997 / SEGU1538324<br/><br/>
+								Please Pay by Electronic Bank Transfer<br/>
+								CONCEPT CHEMICAL CORPORATION Pty Ltd Account No:034702-834806 Westpac Bank SWIFT Code:WPACAU25<br/>
+								Email Remitance to accounts@conceptchemical.com.au<br/>
+								For Credit Card payments, please call 1612 9498 7600
+							    </td>
+			         		</tr>
+			         	</table>
+		         	</t>
+                    <p t-if="o.comment">
+                        <span t-field="o.comment"/>
+                    </p>
+                  <!--  <p t-if="o.payment_term_id">
+                        <span t-field="o.payment_term_id.note"/>
+                    </p> -->
+                    <p t-if="o.fiscal_position_id.note">
+                        <span t-field="o.fiscal_position_id.note"/>
+                    </p>
+                </div>
+            </t>
+        </template>
+        
+        <template id="custom_report_commercial_invoice_jsi" name="custom_report_commercial_invoice">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="is_commercial_invoice" t-value="True"/>
+                    <t t-call="ia_cc_report.custom_report_commercial_invoice_document_jsi" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

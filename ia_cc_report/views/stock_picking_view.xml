@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_picking_form_inherit_special_comment" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherit.custom_comment</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                	<page name="custom_comment" string="Special Instruction">
+                    	<field name="custom_comment" placeholder="Add Special Instruction Comment" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='group_id']" position="after">
+                    <field name="custom_partner_ref" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}"/>
+                    <field name="custom_incoterm_id" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}" />
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
