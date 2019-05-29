@@ -8,7 +8,6 @@
             report_type="qweb-pdf"
             name="ia_cc_report.custom_report_commercial_invoice_jsi"
             file="ia_cc_report.custom_report_commercial_invoice_jsi" 
-        	paperformat="ia_cc_report.paperformat_my_cc_report1"
             />
         
         <template id="custom_report_commercial_invoice_document_jsi" name="commercial_inv_report">
