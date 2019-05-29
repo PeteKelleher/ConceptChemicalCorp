@@ -18,7 +18,6 @@
            <xpath expr="//t/t[2][@t-set='address']" position="replace">
                 <t t-set="information_block">
                     <t t-set="address">
-                    	<br/>
                         <strong>Supplier Address:</strong>
                         <div t-field="o.partner_id" 
                              t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
@@ -57,7 +56,7 @@
 	                    <tr>
 	                        <th><strong>Product Name</strong></th>
 	                        <th><strong>Pack Size</strong></th>
-	                        <th><strong>INCI Name</strong></th>
+<!--	                        <th><strong>INCI Name</strong></th-->
 	                        <th><strong>Batch Number</strong></th>
 <!--	                        <th class="text-center"><strong>Expected Date</strong></th-->
 	                        <th class="text-right"><strong>Unit Quantity</strong></th>
@@ -72,9 +71,9 @@
 	                        </td>
 	                        <td>
 	                        </td>
-	                        <td>
+	                       <!-- <td> 
 								<span t-field="order_line.product_id.x_studio_field_xYGHQ"/>	                        	
-	                        </td>
+	                        </td>-->
 	                        <td>
 	                        </td>
 	                        <!--<td class="text-center">

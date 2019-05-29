@@ -62,7 +62,7 @@
             </xpath>
             <xpath expr="//table[1]/thead/tr/th[@t-if='o.origin']" position="after">
             	<th><strong>Delivery</strong></th>
-            	<th><strong>Commitment Date</strong></th>
+            	<th class="text-center"><strong>Commitment Date</strong></th>
             	<th><strong>Carrier</strong></th>
             </xpath>
             <xpath expr="//table[1]" position="after">
@@ -83,6 +83,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                	<t t-set="total_qty" t-value="0"/>
+		                            <t t-set="total_x_studio_field_JuQGN" t-value="0"/>
+		                            <t t-set="total_weight" t-value="0"/>
+	                                <t t-set="total_gx_studio_field_JuQGN" t-value="0"/>
+	                                <t t-set="total_packages" t-value="0"/>
+	                                <t t-set="total_gs_weight" t-value="0"/>
                                     <t t-foreach="o.move_ids_without_package.sorted(key=lambda m: m.product_id.id)" t-as="move">
                                         <t t-foreach="move.move_line_ids.sorted(key=lambda ml: ml.location_id.id)" t-as="ml">
                                             <tr>
@@ -91,15 +97,27 @@
                                                     <span t-field="ml.product_id.description_picking"/>
                                                 </td>
                                                 <td>
-                                                		<span t-field="ml.package_id.weight"/>
+                                                	 <span t-field="ml.product_id.x_studio_field_JuQGN"/>
                                                 </td>
                                                 <td>
                                                     <span t-if="o.state != 'done'" t-field="ml.product_uom_qty"/>
                                                     <span t-if="o.state == 'done'" t-field="ml.qty_done"/>
                                                     <span t-field="ml.product_uom_id" groups="uom.group_uom"/>
-
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                	<t t-if="o.state != 'done'">
+                                                		<t t-if="ml.product_uom_qty != 0.0 and ml.product_id.x_studio_field_JuQGN != 0.0" >
+                                                			<t t-set="total_packages" t-value="total_packages + (ml.product_uom_qty / ml.product_id.x_studio_field_JuQGN)"/>
+                                                			<span t-esc="(ml.product_uom_qty / ml.product_id.x_studio_field_JuQGN)"/>
+                                                		</t>	
+                                                	</t>
+                                                	<t t-if="o.state == 'done'">
+                                                		<t t-if="ml.qty_done != 0.0 and ml.product_id.x_studio_field_JuQGN != 0.0" >
+                                                			<t t-set="total_packages" t-value="total_packages + (ml.product_uom_qty / ml.product_id.x_studio_field_JuQGN)"/>
+                                                			<span t-esc="(ml.qty_done / ml.product_id.x_studio_field_JuQGN)"/>
+                                                		</t>
+                                                	</t>
+                                                </td>
                                                 <td>
                                                 	<span t-field="ml.lot_name"/>
                                                 </td>
@@ -109,7 +127,7 @@
                                             </tr>
                                         </t>
                                     </t>
-                                    <tr>
+                                    <!--<tr> 
                                     	<td></td>
                                     	<td></td>
                                     	<td></td>
@@ -118,7 +136,7 @@
                                     	<td class="text-right">
                                     		<span t-esc="sum(p_qty.product_uom_qty  for p_qty in o.move_ids_without_package) "/>
                                     	</td>
-                                    </tr>
+                                    </tr>-->
                                     <tr>
                                     	<td></td>
                                     	<td></td>
@@ -126,7 +144,7 @@
                                     	<td></td>
                                     	<td><font color="#875a7b"><b>Total Packages</b></font></td>
                                     	<td class="text-right">
-                                    		<span t-esc="sum(p_qty.weight  for p_qty in o.move_ids_without_package) "/>
+											<span t-esc="total_packages"/>
                                     	</td>
                                     </tr>
                                     <tr>
@@ -135,7 +153,17 @@
                                     	<td></td>
                                     	<td></td>
                                     	<td><font color="#875a7b"><b>Total Gross Shipping Weights</b></font></td>
-                                    	<td class="text-right"><span t-esc="sum(p_qty.product_id.weight  for p_qty in o.move_ids_without_package) "/></td>
+                                    	<td class="text-right">
+<!--                                    		<span t-esc="sum((p_qty.product_id.weight * (p_qty.product_uom_qty / p_qty.product_id.x_studio_field_JuQGN)) for p_qty in o.move_ids_without_package) "/-->
+                                    			<t t-foreach="o.move_ids_without_package" t-as="p_qty">
+			                            		   <t t-if="p_qty.product_id.weight &gt; 0.0 and p_qty.product_id.x_studio_field_JuQGN &gt; 0.0">
+			                            				<t t-set="total_gs_weight" t-value="total_gs_weight +(p_qty.product_id.weight * (p_qty.product_uom_qty / p_qty.product_id.x_studio_field_JuQGN))"/>
+			                            		   </t>
+			                            		</t>
+			                            		<t t-if="total_gs_weight &gt; 0.0">
+			                            			<span t-esc="total_gs_weight"/>
+			                            		</t>
+                                    	</td>
                                     </tr>
                                   </tbody>
                             </table>
@@ -144,8 +172,8 @@
             	<td>
                     <span t-field="o.state"/>
                 </td>
-                <td>
-                    <span t-field="o.scheduled_date"/>
+                <td class="text-center">
+                    <span t-field="o.date_done" t-options="{'widget': 'date'}"/>
                 </td>
                 <td>
                      <span t-field="o.carrier_id"/>

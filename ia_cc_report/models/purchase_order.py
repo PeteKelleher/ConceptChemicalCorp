@@ -14,5 +14,4 @@ class PurchaseOrder(models.Model):
     @api.depends('order_line','order_line.date_planned')
     def compute_custom_date_required(self):
         for rec in self:
-            rec.custom_date_required = rec.order_line[0].date_planned
-            print('rec.custom_date_required================',rec.custom_date_required) 
+            rec.custom_date_required = rec.order_line and rec.order_line[0] and rec.order_line[0].date_planned

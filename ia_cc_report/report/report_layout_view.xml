@@ -84,7 +84,9 @@
                         <span style="color:#591A51;" class="mt0 mb0 text-uppercase" t-field="company.report_header"/>
                     </div>-->
                     <div class="col-xs-10 text-center" t-if="not is_picking_slip">
-                      <span t-field="company.custom_footer_note"/>
+                     <!-- <span t-field="company.custom_footer_note"/>-->
+                      	<span>All quotes, order, deliveries and moves subject to terms and conditions.<br/></span>
+						<span>www.conceptingredients.com.au/terms</span>
                     </div>
                     <div class="col-xs-1 text-center">
                     	<span>Page </span><span class="page" /> of <span class="topage" />

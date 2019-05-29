@@ -49,13 +49,19 @@
            <table width="100%">
                <tr>
                    <td width="50%">
-                       <strong>Customer:</strong>
-                       <div t-field="o.partner_shipping_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                       <t t-if="o.type == 'in_invoice'"><strong>Vendor:</strong></t>
+                       <t t-if="o.type == 'out_invoice'"><strong>Customer:</strong></t>
+<!--                       <div t-field="o.partner_shipping_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' /-->
+                   	   <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                   	   <div class="mt16 text-left" t-if="o.partner_id.vat">
+                   			<t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>: 
+                   			<span t-field="o.partner_id.vat"/>
+                   		</div>
                    </td>
                    <td width="50%" align="right">
                        <div class="text-left"><strong>Shipping address:</strong></div>
-                       <div class="text-left" t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
-                       <div class="mt16 text-left" t-if="o.partner_id.vat"><t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="o.partner_id.vat"/></div>
+                       <div class="text-left" t-field="o.partner_shipping_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                       <div class="mt16 text-left" t-if="o.partner_shipping_id.vat"><t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="o.partner_id.vat"/></div>
                    </td>
                </tr>
            </table>
@@ -109,7 +115,7 @@
                                 <t t-set="colspan" t-value="6"/>
                                 <th class="text-left"><span>Product Name</span></th>
                                 <th class="text-left"><span>Pack Size(KG)</span></th>
-					         	<th class="text-left"><span>INCI Name</span></th>
+<!--					         	<th class="text-left"><span>INCI Name</span></th-->
 					         	<th class="text-left"><span>Batch Number</span></th>
                                 <th class="d-none text-left"><span>Source Document</span></th>
                                 <th class="text-right"><span>Unit Quantity</span></th>
@@ -120,7 +126,7 @@
                                     <!-- TODO: remove in master -->
                                     <t t-set="colspan" t-value="colspan+1"/>
                                 </th>
-                                <th t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>Taxes</span></th>
+<!--                                <th t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>Taxes</span></th-->
                                 <th class="text-right">
                                     <span groups="account.group_show_line_subtotals_tax_excluded">Total Amount</span>
                                     <span groups="account.group_show_line_subtotals_tax_included">Total Price</span>
@@ -140,9 +146,9 @@
                                         <td name="account_invoice_line_name"><span t-field="line.name"/></td>
                                         <td class="text-left">
 							            </td>
-   							            <td class="text-left">
+   							          <!--  <td class="text-left"> 
 							             	<span t-field="line.product_id.x_studio_field_xYGHQ"/>
-							            </td>
+							            </td>-->
 							            <td class="text-left">
 							            </td>
                                         <td class="d-none"><span t-field="line.origin"/></td>
@@ -158,9 +164,9 @@
                                         <td t-if="display_discount" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                                             <span t-field="line.discount"/>
                                         </td>
-                                        <td t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                                        <!--<td t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                                             <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.invoice_line_tax_ids))"/>
-                                        </td>
+                                        </td>-->
                                         <td class="text-right o_price_total">
                                             <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
                                             <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
@@ -232,25 +238,43 @@
             </tr>
          </xpath>
          <xpath expr="//div/p[@name='payment_term']" position="after">
-         	<table>
-         		<tr>
-         			<td width="40%">
-         		    <strong>Pay by EFT:</strong><br/>
-         			EFT Bank Details:<br/>
-					BSB: 032 083<br/>
-					Account Number: 270511<br/>
-					Account Name: Concept Chemical Corporation Pty Ltd
-				    </td>
-         			<td width="60%" class="text-right">
-         			<strong>We Accept Payment By Credit Card:</strong><br/>
-					We accept Payment by Credit Card, please visit our secure payment portal at: www.conceptingredients.com.au/payment<br/>
-					Surcharge on domestic cards 1.5%, non-domestic cards <br/>
-					charged at higher rate and accepted at our<br/>
-					discretion. Please call our accounts <br/>
-					team on +61 2 9498 7600 for credit card payment by phone.
-         			</td>
-         		</tr>
-         	</table>
+         	<t t-if="o.currency_id.name != 'USD'">
+	         	<table>
+	         		<tr>
+	         			<td width="40%">
+	         		    <strong>Pay by EFT:</strong><br/>
+	         			EFT Bank Details:<br/>
+						BSB: 032 083<br/>
+						Account Number: 270511<br/>
+						Account Name: Concept Chemical Corporation Pty Ltd
+					    </td>
+	         			<td width="60%" class="text-right">
+	         			<strong>We Accept Payment By Credit Card:</strong><br/>
+						We accept Payment by Credit Card, please visit our secure payment portal at: www.conceptingredients.com.au/payment<br/>
+						Surcharge on domestic cards 1.5%, non-domestic cards <br/>
+						charged at higher rate and accepted at our<br/>
+						discretion. Please call our accounts <br/>
+						team on +61 2 9498 7600 for credit card payment by phone.
+	         			</td>
+	         		</tr>
+	         	</table>
+         	</t>
+         	<t t-if="o.currency_id.name == 'USD'">
+	         	<table>
+	         		<tr>
+	         			<td width="100%">
+	         		    Concept REF - OSO 3993 - 58380 Part10<br/>
+	         			FOB Shipment to Melbourne, VIC<br/>
+						2FCLs Container Numbers CSNU1287997 / SEGU1538324<br/><br/>
+						Please Pay by Electronic Bank Transfer<br/>
+						CONCEPT CHEMICAL CORPORATION Pty Ltd Account No:034702-834806 Westpac Bank SWIFT Code:WPACAU25<br/>
+						Email Remitance to accounts@conceptchemical.com.au<br/>
+						For Credit Card payments, please call 1612 9498 7600
+					    </td>
+	         		</tr>
+	         	</table>
+         	</t>
+         	
          </xpath>
     </template>
 </odoo>

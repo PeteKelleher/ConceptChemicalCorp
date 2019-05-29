@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+   <!-- <data>
 
         <record id="view_company_form_inherit_custom_footer" model="ir.ui.view">
             <field name="name">res.company.form.inherit.custom_footer</field>
@@ -14,4 +14,5 @@
         </record>
 
     </data>
+   -->
 </odoo>

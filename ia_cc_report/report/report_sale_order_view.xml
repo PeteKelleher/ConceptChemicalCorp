@@ -12,7 +12,7 @@
                         <t t-set="colspan" t-value="5"/>
                         <th class="text-left">Product Name</th>
                         <th class="text-left">Pack Size</th>
-                        <th class="text-left">INCI Name</th>
+<!--                        <th class="text-left">INCI Name</th-->
                         <th class="text-left">Batch Number</th>
                         <th class="text-right">Quantity</th>
                         <th class="text-right">Unit Price</th>
@@ -21,10 +21,12 @@
                             <!-- TODO: remove in master -->
                             <t t-set="colspan" t-value="colspan+1"/>
                         </th>
-                        <th class="text-right">Taxes</th>
-                        <th class="text-right">
-                            <t groups="account.group_show_line_subtotals_tax_excluded">Amount</t>
-                            <t groups="account.group_show_line_subtotals_tax_included">Total Price</t>
+<!--                        <th class="text-right">Taxes</th-->
+                        <th class="text-right" groups="account.group_show_line_subtotals_tax_excluded" >
+                        	Amount
+                        </th>
+                        <th class="text-right" groups="account.group_show_line_subtotals_tax_included" >
+                            Total Price
                         </th>
                     </tr>
                 </thead>
@@ -43,7 +45,7 @@
                                 <td>
 	                            		<span t-field="line.product_packaging.qty"/>
                             	</td>
-                                <td><span t-field="line.product_id.x_studio_field_xYGHQ"/></td>
+<!--                                <td><span t-field="line.product_id.x_studio_field_xYGHQ"/></td-->
                                 <td></td>
                                 <td class="text-right">
                                     <span t-esc="'%.2f' % line.product_uom_qty"/>
@@ -55,12 +57,12 @@
                                 <td t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
                                     <span t-field="line.discount"/>
                                 </td>
-                                <td class="text-right">
+                               <!-- <td class="text-right"> 
                                     <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
-                                </td>
+                                </td>-->
                                 <td class="text-right o_price_total">
-                                    <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
-                                    <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                  <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                  <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
                                 </td>
                             </t>
                             <t t-if="line.display_type == 'line_section'">
@@ -105,8 +107,8 @@
     	 	<td></td>
     	 	<td><span t-field="line.product_id.x_studio_field_xYGHQ"/></td>    
     	 </xpath>-->
-    	 <xpath expr="//div/table/thead/tr/th/t[@groups='account.group_show_line_subtotals_tax_excluded']" position="replace">
-    	 </xpath>
+    	<!-- <xpath expr="//div/table/thead/tr/th/t[@groups='account.group_show_line_subtotals_tax_excluded']" position="replace"> 
+    	 </xpath>-->
     	 <!--<xpath expr="//td[6]/span[@groups='account.group_show_line_subtotals_tax_excluded']" position="replace"> 
     	 </xpath>-->
     	 <xpath expr="//t/t[3]/t/strong[2][@t-if='doc.partner_shipping_id != doc.partner_invoice_id']" position="replace">

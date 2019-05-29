@@ -8,6 +8,7 @@
             report_type="qweb-pdf"
             name="ia_cc_report.custom_report_commercial_invoice_jsi"
             file="ia_cc_report.custom_report_commercial_invoice_jsi" 
+        	paperformat="ia_cc_report.paperformat_my_cc_report1"
             />
         
         <template id="custom_report_commercial_invoice_document_jsi" name="commercial_inv_report">
@@ -94,7 +95,7 @@
                             <tr>
                                 <th>Product Name</th>
                                 <th>Pack Size(KG)</th>
-                                <th>INCI Name</th>
+                               <!-- <th>INCI Name</th>-->
                                 <th>Batch Number</th>
 <!--                                <th class="hidden">Source Document</th-->
                                 <th class="text-right">Unit Quantity</th>
@@ -110,7 +111,7 @@
                             <tr t-foreach="o.invoice_line_ids" t-as="l">
                                 <td><span t-field="l.name"/></td>
                                 <td></td>
-                                <td><span t-field="l.product_id.x_studio_field_xYGHQ"/></td>
+<!--                                <td><span t-field="l.product_id.x_studio_field_xYGHQ"/></td-->
                                 <td> 
                                 	
 					        	</td>
@@ -187,35 +188,53 @@
                             </div>
                         </div>
                     </div>
-                    <p>
-                        Payment Method: Electronic Transfer <br/>
-                    	Concept Chemical Corporation PTY LTD,<br/> 
-                    </p>
-                 <!--   <p> 
-                       USD Bank:
-                       <p><span t-field="o.partner_bank_id.partner_id"/></p>
-                       <p>Account Number:<span t-field="o.partner_bank_id.acc_number"/></p> 
-                       <p><span t-field="o.partner_bank_id.bank_id"/></p>
-                    </p>-->
-                    <table>
-		         		<tr>
-		         			<td width="40%">
-		         		    <strong>Pay by EFT:</strong><br/>
-		         			EFT Bank Details:<br/>
-							BSB: 032 083<br/>
-							Account Number: 270511<br/>
-							Account Name: Concept Chemical Corporation Pty Ltd
-						    </td>
-		         			<td width="60%" class="text-right">
-		         			<strong>We Accept Payment By Credit Card:</strong><br/>
-							www.conceptingredients.com.au/payment<br/>
-							Surcharge on domestic cards 1.5%, non-domestic cards <br/>
-							charged at higher rate and accepted at our<br/>
-							discretion. Please call our accounts <br/>
-							team on +61 2 9498 7600 for credit card payment by phone.
-		         			</td>
-		         		</tr>
-		         	</table>
+                    <t t-if="o.currency_id.name != 'USD'">
+	                    <p>
+	                        Payment Method: Electronic Transfer <br/>
+	                    	Concept Chemical Corporation PTY LTD,<br/> 
+	                    </p>
+	                 <!--   <p> 
+	                       USD Bank:
+	                       <p><span t-field="o.partner_bank_id.partner_id"/></p>
+	                       <p>Account Number:<span t-field="o.partner_bank_id.acc_number"/></p> 
+	                       <p><span t-field="o.partner_bank_id.bank_id"/></p>
+	                    </p>-->
+	                 	
+	                    <table>
+			         		<tr>
+			         			<td width="40%">
+			         		    <strong>Pay by EFT:</strong><br/>
+			         			EFT Bank Details:<br/>
+								BSB: 032 083<br/>
+								Account Number: 270511<br/>
+								Account Name: Concept Chemical Corporation Pty Ltd
+							    </td>
+			         			<td width="60%" class="text-right">
+			         			<strong>We Accept Payment By Credit Card:</strong><br/>
+								www.conceptingredients.com.au/payment<br/>
+								Surcharge on domestic cards 1.5%, non-domestic cards <br/>
+								charged at higher rate and accepted at our<br/>
+								discretion. Please call our accounts <br/>
+								team on +61 2 9498 7600 for credit card payment by phone.
+			         			</td>
+			         		</tr>
+			         	</table>
+		         	</t>
+		         	<t t-if="o.currency_id.name == 'USD'">
+			         	<table>
+			         		<tr>
+			         			<td width="100%">
+			         		    Concept REF - OSO 3993 - 58380 Part10<br/>
+			         			FOB Shipment to Melbourne, VIC<br/>
+								2FCLs Container Numbers CSNU1287997 / SEGU1538324<br/><br/>
+								Please Pay by Electronic Bank Transfer<br/>
+								CONCEPT CHEMICAL CORPORATION Pty Ltd Account No:034702-834806 Westpac Bank SWIFT Code:WPACAU25<br/>
+								Email Remitance to accounts@conceptchemical.com.au<br/>
+								For Credit Card payments, please call 1612 9498 7600
+							    </td>
+			         		</tr>
+			         	</table>
+		         	</t>
                     <p t-if="o.comment">
                         <span t-field="o.comment"/>
                     </p>
