@@ -142,7 +142,7 @@
                                 </td>
                                 <td>
                                 	<t t-if="not move.product_uom_qty  or move.product_id.x_studio_field_JuQGN" >
-                                		<span t-esc="(move.product_uom_qty / move.product_id.x_studio_field_JuQGN)"/>
+                                		<span t-esc="(move.product_uom_qty / float(move.product_id.x_studio_field_JuQGN))"/>
                                 	</t>
                                 </td>
                                 <td class="text-right">
@@ -200,8 +200,8 @@
                                     <span t-field="move_line.product_uom_id"/>
                                 </td>
                                 <td>
-                                	<t t-if="move_line.qty_done &gt; 0.0 and move_line.product_id.x_studio_field_JuQGN &gt; 0.0">
-                                		<span t-esc="(move_line.qty_done / move_line.product_id.x_studio_field_JuQGN)"/>
+                                	<t t-if="move_line.qty_done &gt; 0.0 and float(move_line.product_id.x_studio_field_JuQGN) &gt; 0.0">
+                                		<span t-esc="(move_line.qty_done / float(move_line.product_id.x_studio_field_JuQGN))"/>
                                 	</t>
                                 </td>
                                 <td class="text-right">
@@ -233,10 +233,10 @@
 	                                    	<td><font color="#875a7b"><b>Total Packages</b></font></td>
 			                            	<td class="text-right">
 			                            		<t t-foreach="o.move_ids_without_package" t-as="p_qty">
-				                            		   <t t-if="p_qty.product_uom_qty &gt; 0.0 and p_qty.product_id.x_studio_field_JuQGN &gt; 0.0">
+				                            		   <t t-if="p_qty.product_uom_qty &gt; 0.0 and float(p_qty.product_id.x_studio_field_JuQGN) &gt; 0.0">
 				                            				<t t-set="total_qty" t-value="total_qty + p_qty.product_uom_qty"/>
-				                            				<t t-set="total_x_studio_field_JuQGN" t-value="total_x_studio_field_JuQGN + p_qty.product_id.x_studio_field_JuQGN"/>
-				                            				<t t-set="final_total_package" t-value="final_total_package +((total_qty + p_qty.product_uom_qty) / (total_x_studio_field_JuQGN + p_qty.product_id.x_studio_field_JuQGN))"/>
+				                            				<t t-set="total_x_studio_field_JuQGN" t-value="total_x_studio_field_JuQGN + float(p_qty.product_id.x_studio_field_JuQGN)"/>
+				                            				<t t-set="final_total_package" t-value="final_total_package +((total_qty + p_qty.product_uom_qty) / (total_x_studio_field_JuQGN + float(p_qty.product_id.x_studio_field_JuQGN)))"/>
 				                            	</t>
 				                            	</t>
 				                           		<t t-if="total_qty &gt;0.0 and total_x_studio_field_JuQGN &gt;0.0">
@@ -248,8 +248,8 @@
 	                                    	<td><font color="#875a7b"><b>Total Gross Shipping Weights</b></font></td>
 			                            	<td class="text-right">
 			                            		<t t-foreach="o.move_ids_without_package" t-as="p_qty">
-			                            		   <t t-if="p_qty.product_id.weight &gt; 0.0 and p_qty.product_id.x_studio_field_JuQGN &gt; 0.0">
-			                            				<t t-set="total_gs_weight" t-value="total_gs_weight +(p_qty.product_id.weight * (p_qty.product_uom_qty / p_qty.product_id.x_studio_field_JuQGN))"/>
+			                            		   <t t-if="p_qty.product_id.weight &gt; 0.0 and float(p_qty.product_id.x_studio_field_JuQGN) &gt; 0.0">
+			                            				<t t-set="total_gs_weight" t-value="total_gs_weight +(p_qty.product_id.weight * (p_qty.product_uom_qty / float(p_qty.product_id.x_studio_field_JuQGN)))"/>
 			                            		   </t>
 			                            		</t>
 			                            		<t t-if="total_gs_weight &gt; 0.0">
