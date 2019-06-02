@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+		
+		<template id="report_assets_common" inherit_id="web.report_assets_common">
+	        <xpath expr="." position="inside">
+	        	<link rel="stylesheet" type="text/scss" href="/ia_cc_report/static/src/scss/layout_clean.scss"/>
+	        </xpath>
+    	</template>
     
         <template id="external_layout_clean_inherit_tax_vat" inherit_id="web.external_layout_clean" >
         	<xpath expr="//div[@class='o_clean_header']" position="attributes">
