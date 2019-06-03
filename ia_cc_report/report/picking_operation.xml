@@ -83,11 +83,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                	<t t-set="total_qty" t-value="0"/>
-		                            <t t-set="total_x_studio_field_JuQGN" t-value="0"/>
-		                            <t t-set="total_weight" t-value="0"/>
-	                                <t t-set="total_gx_studio_field_JuQGN" t-value="0"/>
-	                                <t t-set="total_packages" t-value="0"/>
+-	                                <t t-set="total_packages" t-value="0"/>
 	                                <t t-set="total_gs_weight" t-value="0"/>
                                     <t t-foreach="o.move_ids_without_package.sorted(key=lambda m: m.product_id.id)" t-as="move">
                                         <t t-foreach="move.move_line_ids.sorted(key=lambda ml: ml.location_id.id)" t-as="ml">
@@ -113,7 +109,7 @@
                                                 	</t>
                                                 	<t t-if="o.state == 'done'">
                                                 		<t t-if="ml.qty_done != 0.0 and ml.product_id.x_studio_field_JuQGN != 0.0" >
-                                                			<t t-set="total_packages" t-value="total_packages + (ml.product_uom_qty / float(ml.product_id.x_studio_field_JuQGN))"/>
+                                                			<t t-set="total_packages" t-value="total_packages + (ml.qty_done / float(ml.product_id.x_studio_field_JuQGN))"/>
                                                 			<span t-esc="'%0.02f'%((ml.qty_done / float(ml.product_id.x_studio_field_JuQGN)))"/>
                                                 		</t>
                                                 	</t>
@@ -122,7 +118,7 @@
                                                 	<span t-field="ml.lot_name"/>
                                                 </td>
                                                 <td class="text-right">
-                                                	<span t-field="ml.product_id.weight"/>
+                                                	<span t-esc="'%.1f'%ml.product_id.weight"/>
                                                 </td>
                                             </tr>
                                         </t>
