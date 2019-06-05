@@ -73,7 +73,7 @@
 <!--                        <h3>Expected Delivery Slip</h3>-->
 <!--                    </div>-->
 					<tr>
-	                    <td width="59%">
+	                    <td width="59.5%">
 	<!--                        <t t-if="o.move_lines and o.move_lines[0].partner_id">-->
 	<!--                                <strong>Customer:</strong>-->
 	<!--                                <div t-field="o.move_lines[0].partner_id"-->
