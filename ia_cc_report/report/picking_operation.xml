@@ -115,7 +115,7 @@
                                                 	</t>
                                                 </td>
                                                 <td>
-                                                	<span t-field="ml.lot_name"/>
+                                                	<span t-field="ml.lot_id"/>
                                                 </td>
                                                 <td class="text-right">
                                                 	<span t-esc="'%.1f'%ml.product_id.weight"/>
