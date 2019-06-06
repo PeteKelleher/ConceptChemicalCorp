@@ -159,7 +159,7 @@
                                 <td class="text-right">
                                 	<span t-esc="'%.1f'%move.product_id.weight"/>
                                 </td>
-                                    <t t-set="total_qty_custom" t-value="total_qty_custom + (move_line.qty_done / float(move_line.product_id.x_studio_field_JuQGN)) "/>
+                                    <t t-set="total_qty_custom" t-value="total_qty_custom +(move.product_uom_qty / float(move.product_id.x_studio_field_JuQGN)) "/>
                                 </tr>
                             </t>
                         </tbody>
