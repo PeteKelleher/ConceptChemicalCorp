@@ -256,7 +256,7 @@
 				                            	</t>
 				                            	</t>
 				                           		<t t-if="total_qty &gt;0.0 and total_x_studio_field_JuQGN &gt;0.0">
-						                           <span t-esc="'%.0f'%(final_total_package)"/>
+						                           <span t-esc="'%.0f'%(total_qty_custom)"/>
 											   </t>
 			                            	</td> 
 	                            		</tr>

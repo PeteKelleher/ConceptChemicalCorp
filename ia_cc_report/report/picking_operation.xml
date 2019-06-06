@@ -140,7 +140,7 @@
                                     	<td></td>
                                     	<td><font color="#875a7b"><b>Total Packages</b></font></td>
                                     	<td class="text-right">
-											<span t-esc="'%.2f'%(total_packages)"/>
+											<span t-esc="'%.0f'%(total_packages)"/>
                                     	</td>
                                     </tr>
                                     <tr>
