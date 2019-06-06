@@ -16,6 +16,7 @@
          Change layout for invoice report,
          Change layout for Stock Delivery report,
          Change Layout for Purchase Order and Request for Quotation report,
+         
     """,
     "depends" : [
         'delivery',
