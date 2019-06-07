@@ -248,7 +248,7 @@
             </xpath>
             <xpath expr="//t/div/div[3]/div/table/tr[1]/td" position="replace">
                <t t-if="o.state in ['purchase', 'done']"> 
-                    <td><strong>Sub Total  <span t-field="o.currency_id.name"/></strong></td>
+                    <td><strong>Sub Total  <!--<span t-field="o.currency_id.name"/>--></strong></td>
                 </t>
                 <t t-if="o.state not in ['purchase', 'done']"> 
                     <td><strong>Sub Total</strong></td>
@@ -256,7 +256,7 @@
             </xpath>
             <xpath expr="//t/div/div[3]/div/table/tr[3]/td" position="replace">
                <t t-if="o.state in ['purchase', 'done']"> 
-                    <td><strong>Total Amount <span t-field="o.currency_id.name"/></strong></td>
+                    <td><strong>Total Amount <!--<span t-field="o.currency_id.name"/>--></strong></td>
                 </t>
                 <t t-if="o.state not in ['purchase', 'done']"> 
                     <td><strong>Total Amount </strong></td>
