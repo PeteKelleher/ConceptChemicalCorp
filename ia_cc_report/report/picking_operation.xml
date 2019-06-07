@@ -104,8 +104,8 @@
                                                 	<t t-if="o.state != 'done'">
                                                 		<t t-if="ml.product_uom_qty != 0.0 and ml.product_id.x_studio_field_JuQGN != 0.0" >
                                                 			<t t-set="total_packages" t-value="total_packages + (ml.product_uom_qty / float(ml.product_id.x_studio_field_JuQGN))"/>
-                                                			<span t-esc="'%0.02f'%((ml.product_uom_qty / float(ml.product_id.x_studio_field_JuQGN)))"/>
-                                                		</t>	
+                                                			<span t-esc="'%.0f'%((ml.product_uom_qty / float(ml.product_id.x_studio_field_JuQGN)))"/>
+                                                		</t>
                                                 	</t>
                                                 	<t t-if="o.state == 'done'">
                                                 		<t t-if="ml.qty_done != 0.0 and ml.product_id.x_studio_field_JuQGN != 0.0" >
