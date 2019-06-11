@@ -19,7 +19,14 @@
                             <strong>Supplier Address:</strong>
                             <div t-field="o.partner_id"
                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
-                            <p t-if="o.partner_id.vat"> <t t-if="o.partner_id.country_id.name != 'United States'"><t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>:</t> <span t-field="o.partner_id.vat"/></p>
+                            <p t-if="o.partner_id.vat"> 
+	                            <t t-if="o.partner_id.country_id.code == 'AU'">
+	                        		ABN:
+	                        	</t>
+	                        	<t t-if="o.partner_id.country_id.code != 'AU'">
+	                        		Tax ID:
+	                        	</t><span t-field="o.partner_id.vat"/>
+                        	</p>
                         </t>
                     </t>
                 </t>
@@ -249,10 +256,10 @@
             </xpath>
             <xpath expr="//t/div/div[3]/div/table/tr[3]/td" position="replace">
                <t t-if="o.state in ['purchase', 'done']"> 
-                    <td><strong>Total Amount<span t-field="o.currency_id.name"/></strong></td>
+                    <td><strong>Total Amount <span t-field="o.currency_id.name"/></strong></td>
                 </t>
                 <t t-if="o.state not in ['purchase', 'done']"> 
-                    <td><strong>Total Amount</strong></td>
+                    <td><strong>Total Amount </strong></td>
                 </t>
             </xpath>
             <xpath expr="//t/div/div[3]/div/table" position="inside">

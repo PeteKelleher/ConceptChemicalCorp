@@ -69,7 +69,7 @@
             	<strong>Special Instruction:<span t-field="o.custom_comment"/></strong>
             </xpath>
             <xpath expr="//t/div/table[2]" position="replace">
-            	<table class="table table-sm" t-if="o.move_line_ids">
+            	<table class="table table-sm table-custom" t-if="o.move_line_ids">
                                 <t t-set="has_barcode" t-value="any([move_ids_without_package.product_id and move_ids_without_package.product_id.sudo().barcode or move_ids_without_package.package_id for move_ids_without_package in o.move_line_ids])"/>
                                 <t t-set="has_serial_number" t-value="o.move_line_ids.filtered(lambda ml: ml.lot_id or ml.lot_name)" groups="stock.group_production_lot"/>
                                 <thead>
@@ -83,11 +83,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                	<t t-set="total_qty" t-value="0"/>
-		                            <t t-set="total_x_studio_field_JuQGN" t-value="0"/>
-		                            <t t-set="total_weight" t-value="0"/>
-	                                <t t-set="total_gx_studio_field_JuQGN" t-value="0"/>
-	                                <t t-set="total_packages" t-value="0"/>
+-	                                <t t-set="total_packages" t-value="0"/>
 	                                <t t-set="total_gs_weight" t-value="0"/>
                                     <t t-foreach="o.move_ids_without_package.sorted(key=lambda m: m.product_id.id)" t-as="move">
                                         <t t-foreach="move.move_line_ids.sorted(key=lambda ml: ml.location_id.id)" t-as="ml">
@@ -108,21 +104,21 @@
                                                 	<t t-if="o.state != 'done'">
                                                 		<t t-if="ml.product_uom_qty != 0.0 and ml.product_id.x_studio_field_JuQGN != 0.0" >
                                                 			<t t-set="total_packages" t-value="total_packages + (ml.product_uom_qty / float(ml.product_id.x_studio_field_JuQGN))"/>
-                                                			<span t-esc="(ml.product_uom_qty / float(ml.product_id.x_studio_field_JuQGN))"/>
-                                                		</t>	
+                                                			<span t-esc="'%.0f'%((ml.product_uom_qty / float(ml.product_id.x_studio_field_JuQGN)))"/>
+                                                		</t>
                                                 	</t>
                                                 	<t t-if="o.state == 'done'">
                                                 		<t t-if="ml.qty_done != 0.0 and ml.product_id.x_studio_field_JuQGN != 0.0" >
-                                                			<t t-set="total_packages" t-value="total_packages + (ml.product_uom_qty / float(ml.product_id.x_studio_field_JuQGN))"/>
-                                                			<span t-esc="(ml.qty_done / float(ml.product_id.x_studio_field_JuQGN))"/>
+                                                			<t t-set="total_packages" t-value="total_packages + (ml.qty_done / float(ml.product_id.x_studio_field_JuQGN))"/>
+                                                			<span t-esc="'%.0f'%((ml.qty_done / float(ml.product_id.x_studio_field_JuQGN)))"/>
                                                 		</t>
                                                 	</t>
                                                 </td>
                                                 <td>
-                                                	<span t-field="ml.lot_name"/>
+                                                	<span t-field="ml.lot_id"/>
                                                 </td>
                                                 <td class="text-right">
-                                                	<span t-field="ml.product_id.weight"/>
+                                                	<span t-esc="'%.1f'%ml.product_id.weight"/>
                                                 </td>
                                             </tr>
                                         </t>
@@ -144,7 +140,7 @@
                                     	<td></td>
                                     	<td><font color="#875a7b"><b>Total Packages</b></font></td>
                                     	<td class="text-right">
-											<span t-esc="total_packages"/>
+											<span t-esc="'%.0f'%(total_packages)"/>
                                     	</td>
                                     </tr>
                                     <tr>
@@ -161,7 +157,7 @@
 			                            		   </t>
 			                            		</t>
 			                            		<t t-if="total_gs_weight &gt; 0.0">
-			                            			<span t-esc="total_gs_weight"/>
+			                            			<span t-esc="'%0.02f'%(total_gs_weight)"/>
 			                            		</t>
                                     	</td>
                                     </tr>
