@@ -1,0 +1,18 @@
+<odoo>
+	<record id="sale_enterprise.sale_report_action_dashboard" model="ir.actions.act_window">
+		<field name="view_mode">dashboard,pivot,graph,tree</field>
+	</record>
+
+	<record id="view_tree_sale_report" model="ir.ui.view">
+        <field name="name">sale.report.tree</field>
+        <field name="model">sale.report</field>
+        <field name="arch" type="xml">
+            <tree string="Sales Analysis Report">
+            	<field name="name"/>
+            	<field name="product_tmpl_id"/>
+            	<field name="product_uom_qty"/>
+            	<field name="scheduled_date_order"/>
+        	</tree>
+        </field>
+	</record>
+</odoo>
